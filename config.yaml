@@ -1,0 +1,12 @@
+# copy it to vagrant-settings.yaml then Vagrantfile
+# will use values from this file
+
+# Number of additional nodes to the n1 to be run
+host_number: 1
+# 1st 3 numbers of a required /24 IPv4 docker net
+ip1: 10.10.10
+# Vagrant box name (Atlas)
+image_name: bogdando/rabbitmq-cluster-ocf
+# How to upload the OCF RA : none/copy from/wget stable branch
+ocf_file_path: none
+upload_method: wget
