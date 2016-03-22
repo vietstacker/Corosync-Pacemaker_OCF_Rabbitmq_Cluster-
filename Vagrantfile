@@ -18,8 +18,8 @@ def shell_script(filename, env=[], args=[])
 end
 
 # Rabbitmq setup
-rabbit_primitive_setup = shell_script("conf_rabbit_primitive.sh")
-rabbit_ocf_setup = shell_script("conf_rabbit_ocf.sh")
+rabbit_primitive_setup = shell_script("/vagrant/conf_rabbit_primitive.sh")
+rabbit_ocf_setup = shell_script("/vagrant/conf_rabbit_ocf.sh")
 
 
 Vagrant.configure(2) do |config|
@@ -28,7 +28,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "node1", primary: true do |config|
     config.vm.host_name = "node1"
-    corosync_setup = shell_script("conf_corosync.sh", [], ["#{IP1}.2"])
+    corosync_setup = shell_script("/vagrant/conf_corosync.sh", [], ["#{IP1}.2"])
     config.vm.network :private_network, ip: "#{IP1}.2", :mode => 'nat'
     config.vm.provision "shell", run: "always", inline: corosync_setup, privileged: true
     config.vm.provision "shell", run: "always", inline: rabbit_ocf_setup, privileged: true
@@ -43,7 +43,7 @@ Vagrant.configure(2) do |config|
       config.vm.define "node#{host_index}" do |config|
          config.vm.host_name = "node#{host_index}"
          # wait 2 seconds for the first corosync node
-         corosync_setup = shell_script("conf_corosync.sh", [], ["#{IP1}.#{ip}", 2])
+         corosync_setup = shell_script("/vagrant/conf_corosync.sh", [], ["#{IP1}.#{ip}", 2])
          config.vm.network :private_network, ip: "#{IP1}.#{ip}", :mode => 'nat'
          config.vm.provision "shell", run: "always", inline: corosync_setup, privileged: true
          config.vm.provision "shell", run: "always", inline: rabbit_ocf_setup, privileged: true
